@@ -9,12 +9,28 @@
 /* Begin PBXBuildFile section */
 		F4F83AF8291FA60D00CED661 /* CRDT_Framework.docc in Sources */ = {isa = PBXBuildFile; fileRef = F4F83AF7291FA60D00CED661 /* CRDT_Framework.docc */; };
 		F4F83AF9291FA60D00CED661 /* CRDT_Framework.h in Headers */ = {isa = PBXBuildFile; fileRef = F4F83AF6291FA60D00CED661 /* CRDT_Framework.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F4F83B15291FA67100CED661 /* CRDT_Framework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4F83AF3291FA60D00CED661 /* CRDT_Framework.framework */; };
+		F4F83B1E291FA94F00CED661 /* LWWElementDictionaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4F83B1D291FA94F00CED661 /* LWWElementDictionaryTests.swift */; };
+		F4F83B20291FA96200CED661 /* LWWElementDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4F83B1F291FA96200CED661 /* LWWElementDictionary.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		F4F83B16291FA67100CED661 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F4F83AEA291FA60D00CED661 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F4F83AF2291FA60D00CED661;
+			remoteInfo = "CRDT-Framework";
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		F4F83AF3291FA60D00CED661 /* CRDT_Framework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CRDT_Framework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4F83AF6291FA60D00CED661 /* CRDT_Framework.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CRDT_Framework.h; sourceTree = "<group>"; };
 		F4F83AF7291FA60D00CED661 /* CRDT_Framework.docc */ = {isa = PBXFileReference; lastKnownFileType = folder.documentationcatalog; path = CRDT_Framework.docc; sourceTree = "<group>"; };
+		F4F83B11291FA67100CED661 /* CRDT-FrameworkTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "CRDT-FrameworkTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F4F83B1D291FA94F00CED661 /* LWWElementDictionaryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LWWElementDictionaryTests.swift; sourceTree = "<group>"; };
+		F4F83B1F291FA96200CED661 /* LWWElementDictionary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LWWElementDictionary.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -25,6 +41,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		F4F83B0E291FA67100CED661 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F4F83B15291FA67100CED661 /* CRDT_Framework.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -32,6 +56,7 @@
 			isa = PBXGroup;
 			children = (
 				F4F83AF5291FA60D00CED661 /* CRDT-Framework */,
+				F4F83B12291FA67100CED661 /* CRDT-FrameworkTests */,
 				F4F83AF4291FA60D00CED661 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -40,6 +65,7 @@
 			isa = PBXGroup;
 			children = (
 				F4F83AF3291FA60D00CED661 /* CRDT_Framework.framework */,
+				F4F83B11291FA67100CED661 /* CRDT-FrameworkTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -47,10 +73,35 @@
 		F4F83AF5291FA60D00CED661 /* CRDT-Framework */ = {
 			isa = PBXGroup;
 			children = (
+				F4F83B1C291FA93200CED661 /* LWWElementDictionary */,
+				F4F83B1B291FA91C00CED661 /* Framework */,
+			);
+			path = "CRDT-Framework";
+			sourceTree = "<group>";
+		};
+		F4F83B12291FA67100CED661 /* CRDT-FrameworkTests */ = {
+			isa = PBXGroup;
+			children = (
+				F4F83B1D291FA94F00CED661 /* LWWElementDictionaryTests.swift */,
+			);
+			path = "CRDT-FrameworkTests";
+			sourceTree = "<group>";
+		};
+		F4F83B1B291FA91C00CED661 /* Framework */ = {
+			isa = PBXGroup;
+			children = (
 				F4F83AF6291FA60D00CED661 /* CRDT_Framework.h */,
 				F4F83AF7291FA60D00CED661 /* CRDT_Framework.docc */,
 			);
-			path = "CRDT-Framework";
+			path = Framework;
+			sourceTree = "<group>";
+		};
+		F4F83B1C291FA93200CED661 /* LWWElementDictionary */ = {
+			isa = PBXGroup;
+			children = (
+				F4F83B1F291FA96200CED661 /* LWWElementDictionary.swift */,
+			);
+			path = LWWElementDictionary;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -85,6 +136,24 @@
 			productReference = F4F83AF3291FA60D00CED661 /* CRDT_Framework.framework */;
 			productType = "com.apple.product-type.framework";
 		};
+		F4F83B10291FA67100CED661 /* CRDT-FrameworkTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F4F83B18291FA67100CED661 /* Build configuration list for PBXNativeTarget "CRDT-FrameworkTests" */;
+			buildPhases = (
+				F4F83B0D291FA67100CED661 /* Sources */,
+				F4F83B0E291FA67100CED661 /* Frameworks */,
+				F4F83B0F291FA67100CED661 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F4F83B17291FA67100CED661 /* PBXTargetDependency */,
+			);
+			name = "CRDT-FrameworkTests";
+			productName = "CRDT-FrameworkTests";
+			productReference = F4F83B11291FA67100CED661 /* CRDT-FrameworkTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -92,9 +161,13 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1410;
 				LastUpgradeCheck = 1410;
 				TargetAttributes = {
 					F4F83AF2291FA60D00CED661 = {
+						CreatedOnToolsVersion = 14.1;
+					};
+					F4F83B10291FA67100CED661 = {
 						CreatedOnToolsVersion = 14.1;
 					};
 				};
@@ -113,12 +186,20 @@
 			projectRoot = "";
 			targets = (
 				F4F83AF2291FA60D00CED661 /* CRDT-Framework */,
+				F4F83B10291FA67100CED661 /* CRDT-FrameworkTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		F4F83AF1291FA60D00CED661 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F4F83B0F291FA67100CED661 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -133,10 +214,27 @@
 			buildActionMask = 2147483647;
 			files = (
 				F4F83AF8291FA60D00CED661 /* CRDT_Framework.docc in Sources */,
+				F4F83B20291FA96200CED661 /* LWWElementDictionary.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F4F83B0D291FA67100CED661 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F4F83B1E291FA94F00CED661 /* LWWElementDictionaryTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		F4F83B17291FA67100CED661 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F4F83AF2291FA60D00CED661 /* CRDT-Framework */;
+			targetProxy = F4F83B16291FA67100CED661 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		F4F83AFA291FA60D00CED661 /* Debug */ = {
@@ -190,6 +288,8 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -245,6 +345,8 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
@@ -324,6 +426,42 @@
 			};
 			name = Release;
 		};
+		F4F83B19291FA67100CED661 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = JZG66JS6WW;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "borsosbe.CRDT-FrameworkTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		F4F83B1A291FA67100CED661 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = JZG66JS6WW;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "borsosbe.CRDT-FrameworkTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -341,6 +479,15 @@
 			buildConfigurations = (
 				F4F83AFD291FA60D00CED661 /* Debug */,
 				F4F83AFE291FA60D00CED661 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F4F83B18291FA67100CED661 /* Build configuration list for PBXNativeTarget "CRDT-FrameworkTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F4F83B19291FA67100CED661 /* Debug */,
+				F4F83B1A291FA67100CED661 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
