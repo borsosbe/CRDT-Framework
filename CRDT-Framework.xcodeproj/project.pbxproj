@@ -77,9 +77,8 @@
 		F4F83AF5291FA60D00CED661 /* CRDT-Framework */ = {
 			isa = PBXGroup;
 			children = (
-				F4F83B27291FDFBD00CED661 /* CRDTs */,
 				F4F83B21291FD95700CED661 /* DictionaryElement.swift */,
-				F4F83B1C291FA93200CED661 /* LWWElementDictionary */,
+				F4F83B27291FDFBD00CED661 /* CRDTs */,
 				F4F83B1B291FA91C00CED661 /* Framework */,
 			);
 			path = "CRDT-Framework";
@@ -100,13 +99,6 @@
 				F4F83AF7291FA60D00CED661 /* CRDT_Framework.docc */,
 			);
 			path = Framework;
-			sourceTree = "<group>";
-		};
-		F4F83B1C291FA93200CED661 /* LWWElementDictionary */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = LWWElementDictionary;
 			sourceTree = "<group>";
 		};
 		F4F83B27291FDFBD00CED661 /* CRDTs */ = {
