@@ -19,34 +19,34 @@ public struct LWWElementDictionary<K: Hashable, V: Equatable> {
     }
     
     // MARK: Lookup
-    public func lookup(value: V) -> V? {
-        if let addedElement = addDictionary.lookup(value: value) {
-            if let removedElement = removeDictionary.lookup(value: value) {
+    public func lookup(key: K) -> DictionaryElement<V>? {
+        if let addedElement = addDictionary.lookup(key: key) {
+            if let removedElement = removeDictionary.lookup(key: key) {
                 if biasedTowardsAdd {
                     if addedElement.timestamp >= removedElement.timestamp {
-                        return addedElement.element
+                        return addedElement
                     }
                 } else {
                     if addedElement.timestamp > removedElement.timestamp {
-                        return addedElement.element
+                        return addedElement
                     }
                 }
                 return nil
             }
-            return addedElement.element
+            return addedElement
         }
         return nil
     }
     
     // MARK: Add
-    public mutating func add(key: K, value: V, timeStamp: TimeInterval = Date().timeIntervalSinceNow) {
-        self.addDictionary.add(key: key, value: value, timestamp: timeStamp)
+    public mutating func add(key: K, value: V, timestamp: TimeInterval = Date().timeIntervalSinceNow) {
+        self.addDictionary.add(key: key, value: value, timestamp: timestamp)
     }
     
     // MARK: Remove
-    public mutating func remove(key: K, timeStamp: TimeInterval = Date().timeIntervalSinceNow) {
-        guard let addedElement = addDictionary.lookup(key: key), timeStamp >= addedElement.timestamp else { return }
-        self.removeDictionary.add(key: key, value: addedElement.element, timestamp: timeStamp)
+    public mutating func remove(key: K, timestamp: TimeInterval = Date().timeIntervalSinceNow) {
+        guard let addedElement = addDictionary.lookup(key: key), timestamp >= addedElement.timestamp else { return }
+        self.removeDictionary.add(key: key, value: addedElement.element, timestamp: timestamp)
     }
     
     // MARK: Merge
@@ -58,10 +58,12 @@ public struct LWWElementDictionary<K: Hashable, V: Equatable> {
     ///     Compare a LWWElementDictionary with self.
     ///
     ///     Check if both addDictionary and removeDictionary  is a subset of the other addDictionary and  removeDictionary
+    ///
     ///     - Parameter anotherDictionary: The other dictionary
+    ///     - Parameter trueIdentical: Decides that in the removeDic even the values have to be the same or just the existence of the same keys is enough to be considered identical
     ///     - Returns: Wheter this dictionary is a subset of the other
-        public func compare(_ anotherDictionary: LWWElementDictionary<K,V>?) -> Bool {
-            guard anotherDictionary != nil else { return false }
-            return addDictionary.compare(anotherDictionary?.addDictionary) && removeDictionary.compare(anotherDictionary?.removeDictionary)
-        }
+    public func compare(anotherDictionary: LWWElementDictionary<K,V>?, trueIdentical: Bool = false) -> Bool {
+        guard anotherDictionary != nil else { return false }
+        return addDictionary.compare(anotherDictionary: anotherDictionary?.addDictionary) && removeDictionary.compare(anotherDictionary: anotherDictionary?.removeDictionary, trueIdentical: trueIdentical)
+    }
 }

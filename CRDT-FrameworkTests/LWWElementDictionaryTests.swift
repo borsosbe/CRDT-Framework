@@ -8,13 +8,13 @@
 import XCTest
 import CRDT_Framework
 
-// MARK: Approach
+// Approach
 // Naming Structure: test_UnitOfWork_StateUnderTest_ExpectedBehavior
 // Naming Structure: test_[struct or class]_[variable or function]_[expected result]
 // Testing Structure: Given, When, Then
 
 final class LWWElementDictionaryTests: XCTestCase {
-    var sut: LWWElementDictionary<Int, String>! // System Under Test
+    var sut: LWWElementDictionary<String, Int>! // System Under Test
     
     override func setUp() {
         sut = LWWElementDictionary()
@@ -25,82 +25,57 @@ final class LWWElementDictionaryTests: XCTestCase {
         super.tearDown()
     }
     
-    func test_LWWElementDictionary_addFunction_Works() throws {
+    func test_LWWElementDictionary_addFunction_Works() {
         // given
         let expectation = XCTestExpectation(description: "add function add element to LWWElementDictionary")
         // when
-        sut.add(key: 0, value: "zero")
+        sut.add(key: "dog", value: 1)
         // then
-        XCTAssertEqual(sut.lookup(value: "zero"), "zero")
+        XCTAssertEqual(sut.lookup(key: "dog")?.element, 1, "element should be added")
         expectation.fulfill()
     }
     
-    func test_LWWElementDictionary_removeFunction_Works() throws {
+    func test_LWWElementDictionary_removeFunction_Works() {
         // given
-        let expectation1 = XCTestExpectation(description: "remove function remove element from LWWElementDictionary if its timestamp older")
-        let expectation2 = XCTestExpectation(description: "remove function DO NOT remove element from LWWElementDictionary if its timestamp NOT older")
-        sut.add(key: 0, value: "zero", timeStamp: 0)
-        sut.add(key: 1, value: "one", timeStamp: 1)
+        let expectation1 = XCTestExpectation(description: "remove function remove element from LWWElementDictionary if the timestamp is older")
+        let expectation2 = XCTestExpectation(description: "remove function DO NOT remove element from LWWElementDictionary if the timestamp is NOT older")
+        sut.add(key: "dog", value: 1, timestamp: 0)
+        sut.add(key: "cat", value: 2, timestamp: 1)
         // when
-        sut.remove(key: 0, timeStamp: 1)
-        sut.remove(key: 1, timeStamp: 0)
+        sut.remove(key: "dog", timestamp: 1)
+        sut.remove(key: "cat", timestamp: 0)
         // then
-        XCTAssertNil(sut.lookup(value: "zero"))
+        XCTAssertNil(sut.lookup(key: "dog"), "element should be removed because of older remove timestamp")
         expectation1.fulfill()
-        XCTAssertEqual(sut.lookup(value: "one"), "one")
+        XCTAssertEqual(sut.lookup(key: "cat")?.element, 2, "element should not be removed because of older add timestamp")
         expectation2.fulfill()
     }
     
-    func test_LWWElementDictionary_mergeFunction_Works() throws {
+    func test_LWWElementDictionary_compare_Works() {
         // given
-        let expectation = XCTestExpectation(description: "merge two LWWElementDictionary. expercted result: cat, ape is an element, dog is not an element")
-        var sut2 = LWWElementDictionary<Int,String>()
-        // add 0-cat, 1-dog at timestamp 1, remove 0-cat at timestamp 3
-        sut.add(key: 0, value: "cat", timeStamp: 1)
-        sut.add(key: 1, value: "dog", timeStamp: 1)
-        sut.remove(key: 0, timeStamp: 3)
-        // add 0-cat timestamp 5, add 2-ape timestamp 1, remove 0-cat, 1-dog at timestamp 1
-        sut2.add(key: 0, value: "cat", timeStamp: 5)
-        sut2.add(key: 2, value: "ape", timeStamp: 1)
-        sut2.remove(key: 0, timeStamp: 1)
+        let expectation = XCTestExpectation(description: "compare function decides if a LWWElementDictionary is a subset of the other")
+        var sut2 =  LWWElementDictionary<String, Int>()
+        let emptySut = LWWElementDictionary<String, Int>()
+        sut.add(key: "dog", value: 1, timestamp: 0)
+        sut.add(key: "cat", value: 2, timestamp: 1)
+        sut.add(key: "fish", value: 1, timestamp: 0)
+        sut.add(key: "lion", value: 23, timestamp: 0)
+        sut.remove(key: "fish", timestamp: 1)
+        sut.remove(key: "dog", timestamp: 1)
         // when
-        sut.merge(sut2)
+        sut2.add(key: "cat", value: 2, timestamp: 1)
+        sut2.add(key: "fish", value: 2, timestamp: 2)
+        sut2.remove(key: "fish", timestamp: 3)
         // then
-        XCTAssertEqual(sut.lookup(value: "cat"), "cat")
-        XCTAssertEqual(sut.lookup(value: "dog"), "dog")
-        XCTAssertEqual(sut.lookup(value: "ape"), "ape")
+        XCTAssertTrue(sut.compare(anotherDictionary: sut), "sut should be subsets of self")
+        XCTAssertTrue(emptySut.compare(anotherDictionary: sut), "emptySut should be subset of sut")
+        XCTAssertFalse(sut.compare(anotherDictionary: sut2), "sut should not be a subset of sut2")
+        XCTAssertTrue(sut2.compare(anotherDictionary: sut, trueIdentical: false), "sut2 should be a subset of sut")
+        XCTAssertFalse(sut2.compare(anotherDictionary: sut, trueIdentical: true), "sut2 should not be a true Subset of sut")
+        sut2.add(key: "fish", value: 1, timestamp: 4)
+        sut2.remove(key: "fish", timestamp: 5)
+        XCTAssertTrue(sut2.compare(anotherDictionary: sut, trueIdentical: true), "sut2 now should be a true Subset of sut because even in removeDic they has the same values")
         expectation.fulfill()
     }
     
-    func test_LWWElementDictionary_mergeFucntion_Commutative() throws {
-        // given
-        let expectation = XCTestExpectation(description: "merge function is commutative. sut and sut2 will be the same regardless who is the merger")
-        var sut2 = LWWElementDictionary<Int,String>()
-        // add 0-cat
-        sut.add(key: 0, value: "cat", timeStamp: 1)
-        sut.add(key: 1, value: "dog", timeStamp: 1)
-        sut.remove(key: 0, timeStamp: 3)
-        // add 1-cat timestamp 5, add 2-ape timestamp 1, remove 0-cat, 1-dog at timestamp 1
-        sut2.add(key: 0, value: "cat", timeStamp: 5)
-        sut2.add(key: 2, value: "ape", timeStamp: 1)
-        sut2.remove(key: 0, timeStamp: 1)
-        // create tempSut to be able to merge with same statet both times
-        let tempSut = sut
-        // when
-        sut.merge(sut2)
-        sut2.merge(tempSut)
-        // then
-        XCTAssertEqual(sut.lookup(value: "cat"), "cat")
-        XCTAssertEqual(sut.lookup(value: "dog"), "dog")
-        XCTAssertEqual(sut.lookup(value: "ape"), "ape")
-        
-        XCTAssertEqual(sut2.lookup(value: "cat"), "cat")
-        XCTAssertEqual(sut2.lookup(value: "dog"), "dog")
-        XCTAssertEqual(sut2.lookup(value: "ape"), "ape")
-        
-        XCTAssertTrue(sut.compare(sut2))
-        XCTAssertTrue(sut2.compare(sut))
-        
-        expectation.fulfill()
-    }
 }

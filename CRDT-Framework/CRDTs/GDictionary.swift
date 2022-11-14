@@ -9,34 +9,23 @@ import Foundation
 
 // MARK: Grow-only Dictionary - building block for LWW-Element-Dictionary
 
-struct GDictionary<K: Hashable, V: Equatable> {
+public struct GDictionary<K: Hashable, V: Equatable> {
     private var dictionary: [K : DictionaryElement<V>]
     
     public init(dictionary: [K : DictionaryElement<V>]) {
         self.dictionary = dictionary
     }
-    
-    // MARK: Lookup
-    // Look up for value
-    // on multiple founds sends back the one with latest timestamp
-    public func lookup(value: V) -> DictionaryElement<V>? {
-        let found = self.dictionary.filter({ $0.value.element == value })
-        guard !found.isEmpty else { return nil }
-        var oldestValue: DictionaryElement<V>?
-        for item in found {
-            if item.value.timestamp >= (oldestValue?.timestamp ?? 0) {
-                oldestValue = item.value
-            }
-        }
-        return oldestValue
-    }
-    
+
     public func lookup(key: K) -> DictionaryElement<V>? {
         return self.dictionary[key]
     }
 
     // MARK: Add
     public mutating func add(key: K, value: V, timestamp: TimeInterval = Date().timeIntervalSinceNow) {
+        guard self.lookup(key: key) == nil else {
+            self.update(key: key, value: value, timestamp: timestamp)
+            return
+        }
         self.dictionary[key] = DictionaryElement(element: value, timestamp: timestamp)
     }
     
@@ -66,8 +55,14 @@ struct GDictionary<K: Hashable, V: Equatable> {
 ///     Check if this dictionary is a subset of the other
 ///     - Parameter anotherDictionary: The other dictionary
 ///     - Returns: Wheter this dictionary is a subset of the other
-    public func compare(_ anotherDictionary: GDictionary<K,V>?) -> Bool {
+    public func compare(anotherDictionary: GDictionary<K,V>?, trueIdentical: Bool = false) -> Bool {
         guard anotherDictionary != nil else { return false }
-        return dictionary.allSatisfy { anotherDictionary?.lookup(key: $0.key)?.element == $0.value.element }
+        return dictionary.allSatisfy {
+            if trueIdentical {
+                return anotherDictionary?.lookup(key: $0.key)?.element == $0.value.element
+            } else {
+                return anotherDictionary?.lookup(key: $0.key) != nil
+            }
+        }
     }
 }
