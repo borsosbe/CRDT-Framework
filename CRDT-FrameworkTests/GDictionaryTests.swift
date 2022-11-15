@@ -17,7 +17,7 @@ final class GDictionaryTests: XCTestCase {
     var sut: GDictionary<String, Int>! // System Under Test
     
     override func setUp() {
-        sut = GDictionary(dictionary: [:])
+        sut = GDictionary()
     }
 
     override func tearDown() {
@@ -66,8 +66,8 @@ final class GDictionaryTests: XCTestCase {
     func test_LWWElementDictionary_compareFunction_Works() {
         // given
         let expectation = XCTestExpectation(description: "compare function decides if a dictionary is a subset of the other")
-        var sut2 = GDictionary<String, Int>(dictionary: [:])
-        let emptySut = GDictionary<String, Int>(dictionary: [:])
+        var sut2 = GDictionary<String, Int>()
+        let emptySut = GDictionary<String, Int>()
         sut.add(key: "dog", value: 1, timestamp: 0)
         sut.add(key: "cat", value: 2, timestamp: 1)
         sut.add(key: "fish", value: 3, timestamp: 0)
@@ -86,10 +86,10 @@ final class GDictionaryTests: XCTestCase {
     
     func test_LWWElementDictionary_mergeFunction_Works() {
         // given
-        let expectation = XCTestExpectation(description: "merge function merge into a dictionary an another")
+        let expectation1 = XCTestExpectation(description: "merge function merge into a dictionary an another")
         let expectation2 = XCTestExpectation(description: "merge is commutative, merging sut2 into sut should give the same results as merging sut into sut2")
-        var sut2 = GDictionary<String, Int>(dictionary: [:])
-        var tempSut = GDictionary<String, Int>(dictionary: [:])
+        var sut2 = GDictionary<String, Int>()
+        var tempSut = GDictionary<String, Int>()
         sut.add(key: "dog", value: 1, timestamp: 0)
         sut.add(key: "cat", value: 2, timestamp: 0)
         sut.add(key: "fish", value: 3, timestamp: 1)
@@ -98,8 +98,8 @@ final class GDictionaryTests: XCTestCase {
         sut2.add(key: "lion", value: 66, timestamp: 2)
         tempSut = sut
         // when
-        sut.merge(sut2)
-        sut2.merge(tempSut)
+        sut.merge(anotherDictionary: sut2)
+        sut2.merge(anotherDictionary: tempSut)
         // then
         XCTAssertTrue(sut.lookup(key: "dog")?.element == 1, "item not in the merged dic should be unchanged")
         XCTAssertTrue(sut.lookup(key: "dog")?.timestamp == 0, "item not in the merged dic should be unchanged")
@@ -107,13 +107,13 @@ final class GDictionaryTests: XCTestCase {
         XCTAssertFalse(sut.lookup(key: "fish")?.timestamp == 0, "item timestamp should not be updated if the merged one was before")
         XCTAssertTrue(sut.lookup(key: "lion")?.element == 66, "new item 'lion' should be here because of the merge")
         XCTAssertFalse(sut.lookup(key: "fox") != nil, "no random item should not be presented which was not in either of them")
-        expectation.fulfill()
-        XCTAssertTrue(sut2.lookup(key: "dog")?.element == 1, "item not in the merged dic should be unchanged")
-        XCTAssertTrue(sut2.lookup(key: "dog")?.timestamp == 0, "item not in the merged dic should be unchanged")
-        XCTAssertTrue(sut2.lookup(key: "cat")?.timestamp == 1, "item timestamp should be updated if the merged one was older")
-        XCTAssertFalse(sut2.lookup(key: "fish")?.timestamp == 0, "item timestamp should not be updated if the merged one was before")
-        XCTAssertTrue(sut2.lookup(key: "lion")?.element == 66, "new item 'lion' should be here because of the merge")
-        XCTAssertFalse(sut2.lookup(key: "fox") != nil, "no random item should not be presented which was not in either of them")
+        expectation1.fulfill()
+        XCTAssertTrue(sut2.lookup(key: "dog")?.element == 1, "expectaion2 should be fulfilled")
+        XCTAssertTrue(sut2.lookup(key: "dog")?.timestamp == 0, "expectaion2 should be fulfilled")
+        XCTAssertTrue(sut2.lookup(key: "cat")?.timestamp == 1, "expectaion2 should be fulfilled")
+        XCTAssertFalse(sut2.lookup(key: "fish")?.timestamp == 0, "expectaion2 should be fulfilled")
+        XCTAssertTrue(sut2.lookup(key: "lion")?.element == 66, "expectaion2 should be fulfilled")
+        XCTAssertFalse(sut2.lookup(key: "fox") != nil, "expectaion2 should be fulfilled")
        expectation2.fulfill()
     }
 }

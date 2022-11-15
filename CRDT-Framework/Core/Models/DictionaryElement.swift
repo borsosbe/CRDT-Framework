@@ -7,9 +7,7 @@
 
 import Foundation
 
-// MARK: Element for LWW-Element-Dictionary
-// LWW-Element-Dictionary attaches a timestamp to each element (rather than to the whole dictionary)
-
+/// Bulding block for  `GDictionary`.
 public struct DictionaryElement<T> {
     public let element: T
     public let timestamp: TimeInterval
